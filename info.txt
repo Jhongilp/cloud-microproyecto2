@@ -1,0 +1,26 @@
+az aks create -n aks-ai-images \
+--resource-group $RESOURCEGROUP \
+--location eastus \
+--load-balancer-sku standard \
+--nodepool-name default \
+--node-count 2 \
+--node-vm-size standard_a2m_v2  \
+--node-osdisk-size 250 \
+--ssh-key-value ./id_rsa.pub \
+--network-plugin kubenet \
+--service-principal $SERVICE_PRINCIPAL \
+--client-secret "$SERVICE_PRINCIPAL_SECRET" \
+--output none
+
+az aks get-credentials -n aks-ai-images \
+--resource-group $RESOURCEGROUP
+
+kubectl create ns ai-images-app
+
+kubectl apply -n ai-images-app -f deployments/deployment.yaml
+kubectl apply -n ai-images-app -f configmaps/configmap.yaml
+kubectl apply -n ai-images-app -f secrets/secret.yaml
+kubectl apply -n ai-images-app -f services/service.yaml
+
+# restart deployment
+kubectl rollout restart -n ai-images-app deployment/example-deploy
