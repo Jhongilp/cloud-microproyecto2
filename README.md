@@ -1,6 +1,12 @@
 # cloud-microproyecto2
 Archivos de configuración Azure Kubernetes Service
 
+# Integrantes
+
+- Jhos Hurtado
+- Jonathan Gil
+
+
 
 ## Instalar Azure CLI using Docker
 
